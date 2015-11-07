@@ -7,7 +7,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 import json
-from Demo.core.secutity.authDecorators import ajax_login_required
+from Demo.core.secutity.AuthDecorators import ajax_login_required
+from Demo.core.paging.CusPaginator import getUpPagingJSONResult
 
 __author__ = 'johnnytsai'
 
@@ -20,12 +21,9 @@ def index(request):
 @ajax_login_required
 def getUsers(request):
 
-    page = request.GET['page']
-    limit = 10 if request.GET['limit'] else request.GET['limit']
-
-    users = serializers.serialize('json', User.objects.all(), fields=('username', 'last_login', 'email', 'date_joined'))
-    users = json.loads(users)
-    return JsonResponse(dict(users=users))
+    page = 1 if 'page' not in request.GET else request.GET['page']
+    size = 10 if 'size' not in request.GET else request.GET['size']
+    return getUpPagingJSONResult(User, page, size, ('username', 'last_login', 'email', 'date_joined'))
 
 
 @ajax_login_required

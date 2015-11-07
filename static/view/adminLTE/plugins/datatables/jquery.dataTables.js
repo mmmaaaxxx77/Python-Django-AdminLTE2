@@ -11028,7 +11028,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sFirst": "First",
+				// TODO
+				"sFirst": "第一頁",
 	
 	
 				/**
@@ -11051,7 +11052,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sLast": "Last",
+				"sLast": "最後一頁",
 	
 	
 				/**
@@ -11074,7 +11075,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Next",
+				"sNext": "下一頁",
 	
 	
 				/**
@@ -11097,7 +11098,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Previous"
+				"sPrevious": "上一頁"
 			},
 	
 			/**
@@ -11120,7 +11121,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
+			"sEmptyTable": "無任何資料...",
 	
 	
 			/**
@@ -11152,7 +11153,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": "第 _START_ 到 _END_ 筆, 總共 _TOTAL_ 筆",
 	
 	
 			/**
@@ -11173,7 +11174,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "第 0 到 0 筆, 總共 0 筆",
 	
 	
 			/**
@@ -11358,7 +11359,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sProcessing": "Processing...",
+			"sProcessing": "處理中...",
 	
 	
 			/**
@@ -14225,7 +14226,7 @@
 						else {
 							btnDisplay = '';
 							btnClass = '';
-	
+							
 							switch ( button ) {
 								case 'ellipsis':
 									container.append('<span class="ellipsis">&#x2026;</span>');
@@ -14948,4 +14949,3 @@
 }));
 
 }(window, document));
-

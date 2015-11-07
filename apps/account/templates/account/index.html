@@ -3,11 +3,23 @@
 {% block title %}使用者管理{% endblock %}
 {% block head %}
 
+<link rel="stylesheet" href="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/jquery.dataTables.min.css">
+<script src="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+
 {% endblock %}
 
 {% block body %}
 使用者管理
 {{ users }}
+<table class="table table-mailbox" id="ideaList">
+    <thead>
+        <tr style="border: 0px;">
+            <th class="text-center" style="width: 10%;">指派機關</th>
+            <th class="text-center" style="width: 10%;">提議日期</th>
+        </tr>
+    </thead>
+
+</table>
 <br/>
 <button onClick="addUser()">test add User</button>
 
@@ -50,5 +62,106 @@
      }
 });
     </script>
+<script>
+    var datatable = null;
+    function userInit() {
 
+	var ajaxFun = function(sSource, aoData, fnCallback) {
+		var url = "{{ BASE_URL_BACKEND }}/account/users/"
+
+		var startO = null;
+		var lengthO = null;
+		var drawO = null;
+		aoData.forEach(function(item) {
+			if (item.name == "start") {
+				startO = item;
+			}
+			if (item.name == "length") {
+				lengthO = item;
+			}
+			if (item.name == "draw") {
+				drawO = item;
+			}
+		});
+
+		var page = Math.floor(startO.value/lengthO.value);
+		page++;
+
+		$.ajax({
+			type : 'GET',
+			url : url + "?page=" + page + "&size=10",
+			contentType : 'application/json',
+			success : function(result) {
+				if (result.success) {
+					var dat = {
+						draw : drawO.value,
+						data : result.result,
+						recordsTotal : result.totalResults,
+						recordsFiltered : result.totalResults
+					}
+					fnCallback(dat);
+				} else {
+					alert("取得列表失敗。");
+					var dat = {
+							draw : drawO.value,
+							data : [],
+							recordsTotal : 0,
+							recordsFiltered : 0
+						}
+					fnCallback(dat);
+				}
+			},
+			error : function(result) {
+				alert("取得列表失敗。");
+				var dat = {
+						draw : drawO.value,
+						data : [],
+						recordsTotal : 0,
+						recordsFiltered : 0
+					}
+				fnCallback(dat);
+			}
+		});
+	}
+
+	datatable = $('#ideaList').DataTable(
+					{
+						"bProcessing" : true,
+						"bServerSide" : true,
+						"bFilter" : false,
+						"bLengthChange" : false,
+						"columnDefs" : [
+								{
+									"targets": 0,
+									"searchable" : false,
+									"orderable" : false,
+									"title" : "Name",
+									"data" : "fields.username",
+									"render" : function(data, type, full, meta) {
+                                        return data;
+									},
+									"width" : "13%",
+									"className" : "text-center"
+								},
+								{
+									"targets": 1,
+									"searchable" : false,
+									"orderable" : false,
+									"title" : "password",
+									"data" : "fields.email",
+									"render" : function(data, type, full, meta) {
+                                        return data;
+									},
+									"width" : "10%",
+									"className" : "text-center"
+								}
+
+						],
+						"fnServerData" : ajaxFun
+					});
+}
+    $(function(){
+        userInit();
+    });
+</script>
 {% endblock %}
