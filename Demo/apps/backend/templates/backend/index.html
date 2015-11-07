@@ -1,0 +1,14 @@
+{% extends 'backend/layout/default.html' %}
+
+{% block title %}Test Title{% endblock %}
+{% block head %}{% endblock %}
+
+{% block body %}boody
+    <br/>
+    {{STATIC_URL}}/images/1.jpg
+    <br/>
+    {{user.name}}
+    <br/>
+    {{users}}
+
+{% endblock %}
