@@ -19,6 +19,10 @@ def index(request):
 
 @ajax_login_required
 def getUsers(request):
+
+    page = request.GET['page']
+    limit = 10 if request.GET['limit'] else request.GET['limit']
+
     users = serializers.serialize('json', User.objects.all(), fields=('username', 'last_login', 'email', 'date_joined'))
     users = json.loads(users)
     return JsonResponse(dict(users=users))
