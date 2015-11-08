@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
-            <div class="box-header with-border">
+            <div class="box-header">
               <h3 class="box-title">Users</h3>
 
               <div class="box-tools pull-right">
@@ -23,7 +23,7 @@
               <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
-            <div class="box-body no-padding">
+            <div class="box-body">
                 <table class="table" id="ideaList">
                     <thead>
                         <tr style="border: 0px;">
@@ -86,100 +86,102 @@
     var datatable = null;
     function userInit() {
 
-	var ajaxFun = function(sSource, aoData, fnCallback) {
-		var url = "{{ BASE_URL_BACKEND }}/account/users/"
+        var pageSize = 10;
+        var ajaxFun = function(sSource, aoData, fnCallback) {
+            var url = "{{ BASE_URL_BACKEND }}/account/users/"
 
-		var startO = null;
-		var lengthO = null;
-		var drawO = null;
-		aoData.forEach(function(item) {
-			if (item.name == "start") {
-				startO = item;
-			}
-			if (item.name == "length") {
-				lengthO = item;
-			}
-			if (item.name == "draw") {
-				drawO = item;
-			}
-		});
+            var startO = null;
+            var lengthO = null;
+            var drawO = null;
+            aoData.forEach(function(item) {
+                if (item.name == "start") {
+                    startO = item;
+                }
+                if (item.name == "length") {
+                    lengthO = item;
+                }
+                if (item.name == "draw") {
+                    drawO = item;
+                }
+            });
 
-		var page = Math.floor(startO.value/lengthO.value);
-		page++;
+            var page = Math.floor(startO.value/lengthO.value);
+            page++;
 
-		$.ajax({
-			type : 'GET',
-			url : url + "?page=" + page + "&size=10",
-			contentType : 'application/json',
-			success : function(result) {
-				if (result.success) {
-					var dat = {
-						draw : drawO.value,
-						data : result.result,
-						recordsTotal : result.totalResults,
-						recordsFiltered : result.totalResults
-					}
-					fnCallback(dat);
-				} else {
-					alert("取得列表失敗。");
-					var dat = {
-							draw : drawO.value,
-							data : [],
-							recordsTotal : 0,
-							recordsFiltered : 0
-						}
-					fnCallback(dat);
-				}
-			},
-			error : function(result) {
-				alert("取得列表失敗。");
-				var dat = {
-						draw : drawO.value,
-						data : [],
-						recordsTotal : 0,
-						recordsFiltered : 0
-					}
-				fnCallback(dat);
-			}
-		});
-	}
+            $.ajax({
+                type : 'GET',
+                url : url + "?page=" + page + "&size=" + pageSize,
+                contentType : 'application/json',
+                success : function(result) {
+                    if (result.success) {
+                        var dat = {
+                            draw : drawO.value,
+                            data : result.result,
+                            recordsTotal : result.totalResults,
+                            recordsFiltered : result.totalResults
+                        }
+                        fnCallback(dat);
+                    } else {
+                        alert("取得列表失敗。");
+                        var dat = {
+                                draw : drawO.value,
+                                data : [],
+                                recordsTotal : 0,
+                                recordsFiltered : 0
+                            }
+                        fnCallback(dat);
+                    }
+                },
+                error : function(result) {
+                    alert("取得列表失敗。");
+                    var dat = {
+                            draw : drawO.value,
+                            data : [],
+                            recordsTotal : 0,
+                            recordsFiltered : 0
+                        }
+                    fnCallback(dat);
+                }
+            });
+        }
 
-	datatable = $('#ideaList').DataTable(
-					{
-						"bProcessing" : true,
-						"bServerSide" : true,
-						"bFilter" : false,
-						"bLengthChange" : false,
-						"columnDefs" : [
-								{
-									"targets": 0,
-									"searchable" : false,
-									"orderable" : false,
-									"title" : "Name",
-									"data" : "fields.username",
-									"render" : function(data, type, full, meta) {
-                                        return data;
-									},
-									"width" : "13%",
-									"className" : "text-center"
-								},
-								{
-									"targets": 1,
-									"searchable" : false,
-									"orderable" : false,
-									"title" : "password",
-									"data" : "fields.email",
-									"render" : function(data, type, full, meta) {
-                                        return data;
-									},
-									"width" : "10%",
-									"className" : "text-center"
-								}
+        datatable = $('#ideaList').DataTable(
+                        {
+                            "bProcessing" : true,
+                            "pageLength" : pageSize,
+                            "bServerSide" : true,
+                            "bFilter" : false,
+                            "bLengthChange" : false,
+                            "columnDefs" : [
+                                    {
+                                        "targets": 0,
+                                        "searchable" : false,
+                                        "orderable" : false,
+                                        "title" : "Name",
+                                        "data" : "fields.username",
+                                        "render" : function(data, type, full, meta) {
+                                            return data;
+                                        },
+                                        "width" : "13%",
+                                        "className" : "text-center"
+                                    },
+                                    {
+                                        "targets": 1,
+                                        "searchable" : false,
+                                        "orderable" : false,
+                                        "title" : "password",
+                                        "data" : "fields.email",
+                                        "render" : function(data, type, full, meta) {
+                                            return data;
+                                        },
+                                        "width" : "10%",
+                                        "className" : "text-center"
+                                    }
 
-						],
-						"fnServerData" : ajaxFun
-					});
-}
+                            ],
+                            "fnServerData" : ajaxFun
+                        });
+    }
     $(function(){
         userInit();
     });
