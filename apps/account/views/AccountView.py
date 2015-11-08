@@ -20,10 +20,13 @@ def index(request):
 
 @ajax_login_required
 def getUsers(request):
-
     page = 1 if 'page' not in request.GET else request.GET['page']
     size = 10 if 'size' not in request.GET else request.GET['size']
-    return getUpPagingJSONResult(User, page, size, ('username', 'last_login', 'email', 'date_joined'))
+    return getUpPagingJSONResult(User, page, size,
+                                 filter=None if 'username' not in request.GET else {
+                                     'username': request.GET['username']},
+                                 sort=None if 'sort' not in request.GET else request.GET['sort'],
+                                 fields=('username', 'last_login', 'email', 'date_joined'))
 
 
 @ajax_login_required

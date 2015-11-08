@@ -119,4 +119,4 @@ STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script
 LOGIN_REDIRECT_URL = '/backend/'
 LOGIN_URL = '/backend/login/'
 
-SESSION_COOKIE_AGE = 360
+SESSION_COOKIE_AGE = 3600
