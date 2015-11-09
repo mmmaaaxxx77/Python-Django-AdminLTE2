@@ -19,7 +19,7 @@ def index(request):
     return render(request, 'account/index.html', {'users': User.objects.all()})
 
 
-@login_required
+@ajax_login_required
 def dataJS(request):
 
     print(render_to_string("account/data.html", {'users': User.objects.all()}))
