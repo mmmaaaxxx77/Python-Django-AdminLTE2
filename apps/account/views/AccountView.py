@@ -2,13 +2,14 @@
 
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 import json
 from Demo.core.secutity.AuthDecorators import ajax_login_required
 from Demo.core.paging.CusPaginator import getUpPagingJSONResult
+from django.template.loader import render_to_string
 
 __author__ = 'johnnytsai'
 
@@ -16,6 +17,18 @@ __author__ = 'johnnytsai'
 @login_required
 def index(request):
     return render(request, 'account/index.html', {'users': User.objects.all()})
+
+
+@login_required
+def dataJS(request):
+
+    print(render_to_string("account/data.html", {'users': User.objects.all()}))
+    data = json.loads(render_to_string("account/data.html", {'users': User.objects.all()}))
+
+    # 1
+    return HttpResponse(json.dumps(data), content_type="application/javascript")
+    # 2
+    #return JsonResponse(data)
 
 
 @ajax_login_required

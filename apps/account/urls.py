@@ -19,6 +19,7 @@ from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 
 urlpatterns = [url(r'^$', 'apps.account.views.AccountView.index'),
+               url(r'^data/$', 'apps.account.views.AccountView.dataJS'),
                url(r'^users/$', 'apps.account.views.AccountView.getUsers'),
                url(r'^user/$', 'apps.account.views.AccountView.addUser'),
                url(r'^permissions/$', 'apps.account.views.AccountView.getPermissions')]
