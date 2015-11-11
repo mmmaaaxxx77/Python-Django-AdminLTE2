@@ -58,6 +58,7 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'apps/backend/templates/'),
             os.path.join(BASE_DIR, 'apps/account/templates/'),
+            os.path.join(BASE_DIR, 'apps/chat/templates/'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -109,12 +110,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_BACKEND_ROOT = os.path.join(BASE_DIR, 'apps/backend/static')
+STATIC_CHAT_ROOT = os.path.join(BASE_DIR, 'apps/chat/static')
 
 STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script')],
                     ("backend_css", os.path.join(STATIC_BACKEND_ROOT, 'css')),
                     ("backend_view", os.path.join(STATIC_BACKEND_ROOT, 'view')),
                     ("backend_knockout", os.path.join(STATIC_BACKEND_ROOT, 'knockout')),
-                    ("images", os.path.join(STATIC_ROOT, 'images'))]
+                    ("images", os.path.join(STATIC_ROOT, 'images')),]
 
 LOGIN_REDIRECT_URL = '/backend/'
 LOGIN_URL = '/backend/login/'
