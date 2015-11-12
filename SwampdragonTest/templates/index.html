@@ -1,0 +1,43 @@
+{% load static swampdragon_tags %}
+<!DOCTYPE html>
+<html ng-app="TodoApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    {% swampdragon_settings %}
+    <script type="text/javascript" src="{{ STATIC_URL }}/static/swampdragon/js/dist/swampdragon.js"></script>
+    <script>
+    console.log(window.swampdragon_settings.foo); // output bar
+    // ouput http://localhost:9999 assuming you are running your server on that url
+    console.log(window.swampdragon_host);
+
+    swampdragon.ready(function () {
+        subscribe();
+    });
+
+    function subscribe(){
+        swampdragon.subscribe('foo', 'chatroom', null, function (context, data) {
+                //this.dataMapper = new DataMapper(data);
+            });
+    }
+    swampdragon.onChannelMessage(function (channels, data) {
+        console.log(channels + data.name + "," + data.message);
+    });
+
+    function sendMessage (name, message) {
+
+        // Send message
+        swampdragon.callRouter('say_hello', 'foo', {name:name, message:message}, null, function (e, error) {
+            console.log(e);
+        });
+    }
+    </script>
+</head>
+<body>
+{% verbatim %}
+none python
+{% endverbatim %}
+
+
+</body>
+</html>
