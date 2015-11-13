@@ -13,12 +13,17 @@ function subscribe(){
 }
 swampdragon.onChannelMessage(function (channels, data) {
     console.log(channels + data.data.name + "," + data.data.message);
+    $("#chats").append(data.data.name + "," + data.data.message + "</br>");
 });
 
 function sendMessage (name, message) {
 
     // Send message
-    swampdragon.callRouter('say_hello', 'chat', {name:name, message:message}, null, function (e, error) {
+    swampdragon.callRouter('chat', 'chat', {name:name, message:message}, null, function (e, error) {
         console.log(e);
     });
+}
+
+function sumbitMessage(){
+    sendMessage($("#txtNmae").val(), $("#txtMessage").val());
 }

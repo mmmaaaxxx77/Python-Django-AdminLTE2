@@ -2,7 +2,7 @@ from swampdragon.pubsub_providers.data_publisher import publish_data
 import kronos
 
 
-@kronos.register('*:5 * * * *')
+#@kronos.register('*:5 * * * *')
 def mytask():
     print("123")
     f = open('/Users/johnnytsai/PythonProjects/Python-Django-AdminLTE2/SwampdragonTest/console.txt', 'a')
