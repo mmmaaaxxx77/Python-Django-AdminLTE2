@@ -21,7 +21,7 @@
             });
     }
     swampdragon.onChannelMessage(function (channels, data) {
-        console.log(channels + data.name + "," + data.message);
+        console.log(channels + data.data.name + "," + data.data.message);
     });
 
     function sendMessage (name, message) {

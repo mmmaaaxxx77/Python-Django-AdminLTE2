@@ -11,7 +11,7 @@ class FooRouter(BaseRouter):
 
     def say_hello(self, **kwargs):
         self.send({'message': 'hello'})
-        self.publish(self.get_subscription_channels(), kwargs)
+        self.publish(self.get_subscription_channels(), {'data': kwargs})
 
 
 route_handler.register(FooRouter)

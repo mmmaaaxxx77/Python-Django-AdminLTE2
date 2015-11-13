@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'swampdragon',
     'Test',
-    'django_crontab',
+    'kronos'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -117,6 +117,3 @@ SWAMP_DRAGON = {
     'foo': 'bar',
 }
 
-CRONJOBS = [
-    ('*/1 * * * *', 'Test.scheduler.my_task'),
-]
