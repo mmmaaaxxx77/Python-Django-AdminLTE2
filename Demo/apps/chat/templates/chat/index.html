@@ -1,7 +1,13 @@
 {% extends 'backend/layout/default.html' %}
 
+{% load static swampdragon_tags %}
+
 {% block title %}Chat{% endblock %}
 {% block head %}
+
+    {% swampdragon_settings %}
+    <script type="text/javascript" src="{{ STATIC_URL }}/swampdragon/js/dist/swampdragon.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}chat/chat.js"></script>
 
 {% endblock %}
 

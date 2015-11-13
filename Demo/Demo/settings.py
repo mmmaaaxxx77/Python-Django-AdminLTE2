@@ -36,7 +36,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'swampdragon',
     'apps.backend',
+    'apps.account',
+    'apps.chat',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,9 +119,19 @@ STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script
                     ("backend_css", os.path.join(STATIC_BACKEND_ROOT, 'css')),
                     ("backend_view", os.path.join(STATIC_BACKEND_ROOT, 'view')),
                     ("backend_knockout", os.path.join(STATIC_BACKEND_ROOT, 'knockout')),
-                    ("images", os.path.join(STATIC_ROOT, 'images')),]
+                    ("images", os.path.join(STATIC_ROOT, 'images')),
+                    ("chat", STATIC_CHAT_ROOT),]
 
 LOGIN_REDIRECT_URL = '/backend/'
 LOGIN_URL = '/backend/login/'
 
 SESSION_COOKIE_AGE = 3600
+
+# SwampDragon settings
+SWAMP_DRAGON_CONNECTION = ('Demo.sockserver.DataConnection', '/data')
+
+DRAGON_URL = 'http://localhost:9999/'
+
+SWAMP_DRAGON = {
+    'config_name': 'value',
+}
