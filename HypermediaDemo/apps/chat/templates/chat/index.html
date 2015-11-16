@@ -1,0 +1,52 @@
+{% extends 'backend/layout/default.html' %}
+
+{% load static swampdragon_tags %}
+
+{% block title %}Chat{% endblock %}
+{% block head %}
+
+    {% swampdragon_settings %}
+    <script type="text/javascript" src="{{ STATIC_URL }}/swampdragon/js/dist/swampdragon.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}chat/chat.js"></script>
+
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Chat</h3>
+
+              <div class="box-tools pull-right">
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="col-sm-12" id="chats">
+                </div>
+                <form role="form" class="">
+                    <div class="form-group">
+                        <label for="txtNmae" class="col-sm-1 control-label">NAME</label>
+                        <div class="col-sm-3">
+                          <input type="text" class="form-control" id="txtNmae" placeholder="Enter name">
+                        </div>
+                    </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtMessage">
+                                <span class="input-group-btn">
+                                  <button type="button" class="btn btn-info btn-flat" onClick="sumbitMessage()">SEND</button>
+                                </span>
+                        </div>
+                </form>
+            <!-- /.box-body -->
+            <div class="box-footer no-padding">
+
+            </div>
+          </div>
+    </div>
+</div>
+<br/>
+
+{% endblock %}
