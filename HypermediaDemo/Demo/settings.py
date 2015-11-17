@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'apps.backend',
     'apps.account',
     'apps.chat',
+    'django_ripozo'
 )
 
 MIDDLEWARE_CLASSES = (

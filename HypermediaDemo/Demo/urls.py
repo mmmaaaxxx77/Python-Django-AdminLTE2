@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^backend/', include('apps.backend.urls')),
     url(r'^backend/account/', include('apps.account.urls')),
     url(r'^backend/chat/', include('apps.chat.urls')),
-    url(r'^api/', include(v1_api.urls))
+    url(r'^api/', include(v1_api.urls)),
+    url(r'', include('apps.ripozo.urls')),
 ]
