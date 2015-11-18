@@ -20,8 +20,11 @@ class UserResource(restmixins.CRUDL):
 
     @apimethod(route='/getUser', methods=['GET'])
     def get_user(cls, request):
-        username = '' if 'username' not in request.GET else request.GET['username']
-        return UserResource.query_string(username=username)
+        #username = request.get('username')
+        #return UserResource.query_string(username="root")
+        #UserResource.get_entities()
+        #return cls(properties=request.url_params, route_extension='extension/{0}'.format(1))
+        return UserResource.get_entities()
 
 #class TaskResource(restmixins.CRUD):
 #    manager = TaskManager()
