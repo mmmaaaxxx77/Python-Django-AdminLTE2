@@ -1,8 +1,9 @@
 import json
-from ripozo import restmixins, ListRelationship, Relationship, apimethod
+from ripozo import ListRelationship, Relationship, apimethod
+from apps.ripozo import CusRestmixins
 from .managers import UserManager
 
-class UserResource(restmixins.CRUDL):
+class UserResource(CusRestmixins.CRUDL):
     manager = UserManager()
     resource_name = 'user'
     pks = ('username',)

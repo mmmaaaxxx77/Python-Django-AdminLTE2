@@ -1,4 +1,4 @@
-from django_ripozo import DjangoManager
+from .CustomManager import DjangoManager
 from django.contrib.auth.models import User
 
 
@@ -8,6 +8,7 @@ class UserManager(DjangoManager):
     update_fields = ('email',) # These are the only fields allowed when updating.
     model = User
     paginate_by = 2
+    page_num = 1
 
 #class TaskManager(DjangoManager):
 #    fields = ('id', 'title', 'description', 'completed', 'task_board_id',)
