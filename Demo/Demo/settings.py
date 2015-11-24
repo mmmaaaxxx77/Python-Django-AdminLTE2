@@ -119,6 +119,7 @@ STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script
                     ("backend_css", os.path.join(STATIC_BACKEND_ROOT, 'css')),
                     ("backend_view", os.path.join(STATIC_BACKEND_ROOT, 'view')),
                     ("backend_knockout", os.path.join(STATIC_BACKEND_ROOT, 'knockout')),
+                    ("backend", STATIC_BACKEND_ROOT),
                     ("images", os.path.join(STATIC_ROOT, 'images')),
                     ("chat", STATIC_CHAT_ROOT),]
 
