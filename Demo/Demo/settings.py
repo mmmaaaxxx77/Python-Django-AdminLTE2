@@ -114,6 +114,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_BACKEND_ROOT = os.path.join(BASE_DIR, 'apps/backend/static')
 STATIC_CHAT_ROOT = os.path.join(BASE_DIR, 'apps/chat/static')
+STATIC_ACCOUNT_ROOT = os.path.join(BASE_DIR, 'apps/account/static')
 
 STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script')],
                     ("backend_css", os.path.join(STATIC_BACKEND_ROOT, 'css')),
@@ -121,6 +122,7 @@ STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script
                     ("backend_knockout", os.path.join(STATIC_BACKEND_ROOT, 'knockout')),
                     ("backend", STATIC_BACKEND_ROOT),
                     ("images", os.path.join(STATIC_ROOT, 'images')),
+                    ("account", STATIC_ACCOUNT_ROOT),
                     ("chat", STATIC_CHAT_ROOT),]
 
 LOGIN_REDIRECT_URL = '/backend/'

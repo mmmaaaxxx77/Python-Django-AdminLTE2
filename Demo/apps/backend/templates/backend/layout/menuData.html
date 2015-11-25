@@ -1,8 +1,27 @@
 var MENU_LIST = [
     {
         id : "1",
-        name : "使用者管理",
+        title : "帳號管理",
+        description : "test",
         url : "{{ BASE_URL_BACKEND }}" + "/account/",
         icon : "glyphicon glyphicon-bullhorn"
+    },
+    {
+        title : "CHAT",
+        url : "{{ BASE_URL_BACKEND }}" + "/account/",
+        icon : "glyphicon glyphicon-bullhorn",
+        subMenus : [
+            {
+                id : "1",
+                title : "sub1",
+                url : "{{ BASE_URL_BACKEND }}" + "/account/",
+                icon : "glyphicon glyphicon-bullhorn"
+            },
+            {
+                title : "sub2",
+                url : "{{ BASE_URL_BACKEND }}" + "/account/",
+                icon : "glyphicon glyphicon-bullhorn"
+            }
+        ]
     }
 ]

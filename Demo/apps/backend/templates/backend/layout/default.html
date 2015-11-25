@@ -205,12 +205,29 @@
           <!-- /.search form -->
 
           <!-- Sidebar Menu -->
-          <ul class="sidebar-menu">
+            <ul class="sidebar-menu" data-bind="foreach: menuData">
+                <li class="header" data-bind="visible:$index() == 0">HEADER</li>
+
+                <li data-bind="css:{active:active}, visible:subMenuList.length == 0"><a href="#" data-bind="attr:{href:url}"><i class="fa fa-link" data-bind="attr:{class:icon}"></i>
+                    <span data-bind="text:title"></span>
+                    <span class="label pull-right" data-bind="text:badge.text, attr:{class:badge.color()}"></span>
+                </a></li>
+
+                <li class="treeview" data-bind="css:{active:active}, visible:subMenuList.length != 0">
+                    <a href="#"><i class="fa fa-link" data-bind="attr:{class:icon}"></i> <span data-bind="text:title"></span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu" data-bind="foreach: subMenuList">
+                        <li><a href="#" data-bind="attr:{href:url}"><i class="fa fa-link" data-bind="attr:{class:icon}"></i>
+                            <span data-bind="text:title"></span>
+                            <span class="label pull-right" data-bind="text:badge.text, attr:{class:badge.color()}"></span>
+                        </a></li>
+                    </ul>
+                </li>
+            </ul>--><!-- /.sidebar-menu -->
+          <!--<ul class="sidebar-menu">
             <li class="header">HEADER</li>
-            <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
             <li><a href="{{ BASE_URL_BACKEND }}/account/"><i class="fa fa-link"></i> <span>帳號管理</span></a></li>
-              <li><a href="{{ BASE_URL_BACKEND }}/chat/"><i class="fa fa-link"></i> <span>Chat</span></a></li>
+            <li><a href="{{ BASE_URL_BACKEND }}/chat/"><i class="fa fa-link"></i> <span>Chat</span></a></li>
             <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
             <li class="treeview">
               <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -219,7 +236,7 @@
                 <li><a href="#">Link in level 2</a></li>
               </ul>
             </li>
-          </ul><!-- /.sidebar-menu -->
+          </ul>--><!-- /.sidebar-menu -->
         </section>
         <!-- /.sidebar -->
       </aside>
@@ -229,17 +246,20 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Page Header
-            <small>Optional description</small>
+            <span data-bind="text:nowPage().title"></span>
+            <small data-bind="text:nowPage().description"></small>
           </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-            <li class="active">Here</li>
+          <ol class="breadcrumb" data-bind="foreach: breadcrumb">
+            <li data-bind="css: {active:$index()==($parent.breadcrumb().length-1)}">
+                <a href="#" data-bind="if:$index()!=($parent.breadcrumb().length-1), attr:{href:url}"><i class="fa fa-dashboard" data-bind="attr:{class:icon}"></i> <span data-bind="text:title"></span>
+                </a>
+                <span data-bind="if:$index()==($parent.breadcrumb().length-1)"><span data-bind="text:title"></span></span>
+            </li>
           </ol>
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content" id="_subPage">
 
           {% block body %}{% endblock %}
 
