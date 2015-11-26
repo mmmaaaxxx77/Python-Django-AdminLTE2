@@ -4,7 +4,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 # from apps.backend.models import User
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
 from Demo import settings
 from Demo.context_processors import baseUrl
@@ -16,7 +16,8 @@ __author__ = 'johnnytsai'
 def index(request):
     if request.method == 'GET':
         # user = User(name='johnny')
-        return render(request, 'backend/index.html', {})
+        #return render(request, 'backend/index.html', {})
+        return HttpResponseRedirect("/backend/account")
 
 def getMenuJS(request):
     dic = baseUrl(request)
