@@ -24,7 +24,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>C</b>MS</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Demo</b>CMS</span>
+          <span class="logo-lg"><b>Crawler</b>CMS</span>
         </a>
 
         <!-- Header Navbar -->
@@ -131,16 +131,16 @@
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- The user image in the navbar-->
-                  <img src="{{ STATIC_URL }}backend_view/adminLTE/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                  <img src="{{ STATIC_URL }}backend_view/adminLTE/img/user.jpg" class="user-image" alt="User Image">
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">Johnny Tsai</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
                   <li class="user-header">
-                    <img src="{{ STATIC_URL }}backend_view/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="{{ STATIC_URL }}backend_view/adminLTE/img/user.jpg" class="img-circle" alt="User Image">
                     <p>
-                      Alexander Pierce - Web Developer
+                      Johnny Tsai - Web Developer
                       <small>Member since Nov. 2012</small>
                     </p>
                   </li>
@@ -184,10 +184,10 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="{{ STATIC_URL }}backend_view/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <img src="{{ STATIC_URL }}backend_view/adminLTE/img/user.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-              <p>Alexander Pierce</p>
+              <p>Johnny Tsai</p>
               <!-- Status -->
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -206,16 +206,16 @@
 
           <!-- Sidebar Menu -->
             <ul class="sidebar-menu" data-bind="foreach: menuData">
-                <li class="header" data-bind="visible:$index() == 0">HEADER</li>
+                <li class="header" data-bind="visible:id == 'HEADER', text:title">HEADER</li>
 
-                <li data-bind="css:{active:active}, visible:subMenuList.length == 0"><a href="#" data-bind="attr:{href:url}"><i class="fa fa-link" data-bind="attr:{class:icon}"></i>
+                <li data-bind="if:id != 'HEADER', css:{active:active}, visible:subMenuList.length == 0"><a href="#" data-bind="attr:{href:url}"><i class="fa fa-link" data-bind="attr:{class:icon}"></i>
                     <span data-bind="text:title"></span>
                     <span class="label pull-right" data-bind="text:badge.text, attr:{class:badge.color()}"></span>
                 </a></li>
 
-                <li class="treeview" data-bind="css:{active:active}, visible:subMenuList.length != 0">
+                <li class="treeview" data-bind="if:id != 'HEADER', css:{active:active}, visible:subMenuList.length != 0">
                     <a href="#"><i class="fa fa-link" data-bind="attr:{class:icon}"></i> <span data-bind="text:title"></span> <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu" data-bind="foreach: subMenuList">
+                    <ul class="treeview-menu" data-bind="css:{'menu-open':active}, foreach: subMenuList, style: {display:active?'block':'none'}">
                         <li><a href="#" data-bind="attr:{href:url}"><i class="fa fa-link" data-bind="attr:{class:icon}"></i>
                             <span data-bind="text:title"></span>
                             <span class="label pull-right" data-bind="text:badge.text, attr:{class:badge.color()}"></span>

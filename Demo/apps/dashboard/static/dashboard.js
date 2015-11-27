@@ -4,9 +4,9 @@ function PageViewModel(nowPage) {
 	this.nowPage = ko.observable(nowPage);
 }
 
-/* Accounts */
+/* Dashboard */
 $(function() {
-	pageViewModel = new PageViewModel("帳號管理%>使用者");
+	pageViewModel = new PageViewModel("Dashboard");
     ko.applyBindings(getMainViewModel());
 	ko.applyBindings(pageViewModel, document.getElementById("_subPage"));
 });

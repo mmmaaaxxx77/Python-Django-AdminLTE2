@@ -62,6 +62,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'apps/backend/templates/'),
             os.path.join(BASE_DIR, 'apps/account/templates/'),
             os.path.join(BASE_DIR, 'apps/chat/templates/'),
+            os.path.join(BASE_DIR, 'apps/dashboard/templates/'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -115,6 +116,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_BACKEND_ROOT = os.path.join(BASE_DIR, 'apps/backend/static')
 STATIC_CHAT_ROOT = os.path.join(BASE_DIR, 'apps/chat/static')
 STATIC_ACCOUNT_ROOT = os.path.join(BASE_DIR, 'apps/account/static')
+STATIC_DASHBOARD_ROOT = os.path.join(BASE_DIR, 'apps/dashboard/static')
 
 STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script')],
                     ("backend_css", os.path.join(STATIC_BACKEND_ROOT, 'css')),
@@ -123,7 +125,8 @@ STATICFILES_DIRS = [['backend_script', os.path.join(STATIC_BACKEND_ROOT, 'script
                     ("backend", STATIC_BACKEND_ROOT),
                     ("images", os.path.join(STATIC_ROOT, 'images')),
                     ("account", STATIC_ACCOUNT_ROOT),
-                    ("chat", STATIC_CHAT_ROOT),]
+                    ("chat", STATIC_CHAT_ROOT),
+                    ("dashboard", STATIC_DASHBOARD_ROOT),]
 
 LOGIN_REDIRECT_URL = '/backend/'
 LOGIN_URL = '/backend/login/'

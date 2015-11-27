@@ -55,7 +55,7 @@ function getMenuList(){
 	var pagelist = nowPage.split("%>");
 
 	// create list
-	for(i in MENU_LIST){
+	for(var i = 0 ; i < MENU_LIST.length ; i++){
 		// handle subMenuList
 		if(MENU_LIST[i].subMenus != null)
 			if(MENU_LIST[i].subMenus.length != 0)
@@ -102,7 +102,7 @@ function setActive(menu, pagelist, level){
 function getBreadcrumb(list, result, level){
 	if(result == null) {
 		var result = [];
-		var home = jQuery.extend(true, {}, list[0]);
+		var home = jQuery.extend(true, {}, list[1]);
 		home.title = "HOME";
 		result[result.length] = home;
 	}
@@ -114,11 +114,11 @@ function getBreadcrumb(list, result, level){
 		level = 0;
 
 	for(i in list){
-		if(list[i].title == pagelist[level]) {
+		if(list[i].title == pagelist[level] && list[i].id != "HEADER") {
 			result[result.length] = list[i];
 			level++;
 			if (list[i].subMenuList != null)
-				if (list[i].length != 0)
+				if (list[i].subMenuList.length != 0)
 					getBreadcrumb(list[i].subMenuList, result, level);
 		}
 	}
@@ -141,8 +141,8 @@ function getNowPage(list, result, level){
 			result = list[i];
 			level++;
 			if (list[i].subMenuList != null)
-				if (list[i].length != 0 && (pagelist.length-1) != level)
-					getBreadcrumb(list[i].subMenuList, result, level);
+				if (list[i].subMenuList.length != 0)
+					result = getNowPage(list[i].subMenuList, result, level);
 		}
 	}
 
