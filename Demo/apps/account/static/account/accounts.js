@@ -1,12 +1,23 @@
 /* ViewModel */
 var pageViewModel = null;
 function PageViewModel(nowPage) {
+	var viewModel = this;
+	this._dummyObservable = ko.observable();
 	this.nowPage = ko.observable(nowPage);
 	this.newUser = {
 		username : ko.observable(null),
 		password : ko.observable(null),
 		repassword : ko.observable(null)
 	}
+	this.userProfile = {
+		username : ko.observable(null),
+		email : ko.observable(null),
+		profile_image : ko.observable(null)
+	}
+	this.profileImage = ko.pureComputed(function() {
+		pageViewModel._dummyObservable();
+		return _URLS['account_getProfileImage'] + "?path=" + this.userProfile.profile_image();
+	}, this);
 }
 
 /* Accounts */
@@ -15,6 +26,7 @@ $(function() {
 	ko.applyBindings(getMainViewModel());
 	ko.applyBindings(pageViewModel, document.getElementById("_subPage"));
 	getUsers();
+	getWhoAmI();
 });
 
 var datatable = null;
@@ -49,7 +61,7 @@ function getUsers(){
 				if (result.success) {
 					var modelresult = [];
 					for(var i = 0 ; i < result.result.length ; i++){
-						modelresult.push(new User(result.result[i]));
+						modelresult.push(new User(result.result[i].user));
 					}
 					var dat = {
 						draw : drawO.value,
@@ -82,7 +94,7 @@ function getUsers(){
 		});
 	}
 
-	datatable = $('#ideaList').DataTable(
+	datatable = $('#userList').DataTable(
 		{
 			"bProcessing" : true,
 			"pageLength" : pageSize,
@@ -154,6 +166,10 @@ function getUsers(){
 			],
 			"fnServerData" : ajaxFun
 		});
+	$('#userList tbody').on('mouseover', 'tr', function () {
+		var data = datatable.row(this).data();
+		getWhoAmI(data.username);
+	} );
 }
 
 function addUser(){
@@ -170,22 +186,56 @@ function addUser(){
 
 function bindSimpleUserCreate(){
 
-		var formData = new FormData();
-		formData.append('username', pageViewModel.newUser.username());
-		formData.append('password', pageViewModel.newUser.password());
-		if($("#profile_image")[0].files.length != 0)
-			formData.append('file', $("#profile_image")[0].files[0]);
+	var formData = new FormData();
+	formData.append('username', pageViewModel.newUser.username());
+	formData.append('password', pageViewModel.newUser.password());
+	if($("#profile_image")[0].files.length != 0)
+		formData.append('file', $("#profile_image")[0].files[0]);
 
-		$.ajax({
-			url: _URLS['account_editUser'],
-			type: 'POST',
-			data: formData,
-			async: false,
-			success: function (data) {
-				alert(data)
-			},
-			cache: false,
-			contentType: false,
-			processData: false
-		});
+	$.ajax({
+		url: _URLS['account_editUser'],
+		type: 'POST',
+		data: formData,
+		async: false,
+		success: function (data) {
+			if(data.success){
+				clearSimpleUserCreate();
+				datatable.ajax.reload();
+			}else{
+
+			}
+		},
+		cache: false,
+		contentType: false,
+		processData: false
+	});
+}
+
+function clearSimpleUserCreate(){
+	pageViewModel.newUser.username(null);
+	pageViewModel.newUser.password(null);
+	pageViewModel.newUser.repassword(null);
+	$("#profile_image").val(null)
+}
+
+function getWhoAmI(username){
+	var url = _URLS['account_whoAmI'];
+	if(username != null){
+		url = _URLS['account_getUser'].replace("(?P&lt;username&gt;\w+)", username)
+	}
+
+	$.ajax({
+		type : 'GET',
+		url : url,
+		contentType : 'application/json',
+		success : function(result) {
+			pageViewModel.userProfile.username(result.user.username);
+			pageViewModel.userProfile.email(result.user.email);
+			pageViewModel.userProfile.profile_image(result.profile_image);
+			pageViewModel._dummyObservable.notifySubscribers();
+		},
+		error : function(result) {
+			alert("取得Profile失敗。");
+		}
+	});
 }

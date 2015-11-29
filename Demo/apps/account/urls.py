@@ -23,8 +23,11 @@ accountUrl = [  # Account
                 url(r'^urls.js$', 'apps.account.views.AccountView.getUrls', name='account_urls'),
                 url(r'^data/$', 'apps.account.views.AccountView.dataJS', name='test'),
                 url(r'^users/$', 'apps.account.views.AccountView.getUsers', name='account_getUsers'),
+                url(r'^users/(?P<username>\w+)/$', 'apps.account.views.AccountView.getUser', name='account_getUser'),
                 url(r'^user/$', 'apps.account.views.AccountView.editUser', name='account_editUser'),
-                url(r'^userP/$', 'apps.account.views.AccountView.getUserProfiles', name='account_getUserPs'),]
+                url(r'^userP/$', 'apps.account.views.AccountView.getUserProfiles', name='account_getUserPs'),
+                url(r'^profileImage/$', 'apps.account.views.AccountView.getProfileImage', name='account_getProfileImage'),
+                url(r'^whoAmI/$', 'apps.account.views.AccountView.whoAmI', name='account_whoAmI'),]
 
 urlpatterns = accountUrl + [
     # Permission

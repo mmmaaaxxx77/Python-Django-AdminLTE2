@@ -15,13 +15,15 @@ from apps.account.serializers.UserProfileSerializer import UserProfileSerializer
 from apps.account.serializers.UserSerializer import UserSerializer
 import apps.account.urls as _url
 from rest_framework import serializers
+import mimetypes
+from os.path import basename
 
 __author__ = 'johnnytsai'
-
+mimetypes.init()
 
 @login_required
 def index(request):
-    return render(request, 'account/index.html', {'users': User.objects.all()})
+    return render(request, 'account/index.html', {'loginUser': request.user, 'users': User.objects.all()})
 
 
 @ajax_login_required
@@ -46,18 +48,23 @@ def dataJS(request):
 def getUsers(request):
     page = 1 if 'page' not in request.GET else request.GET['page']
     size = 10 if 'size' not in request.GET else request.GET['size']
-    obj = setUpPagingObject(User, page, size,
+    obj = setUpPagingObject(UserProfile, page, size,
                                  filter=None if 'username' not in request.GET else {
                                      'username': request.GET['username']},
                                  sort=None if 'sort' not in request.GET else request.GET['sort'])
-    data = UserSerializer(instance=obj['result'], many=True).data
+    data = UserProfileSerializer(instance=obj['result'], many=True).data
     return generatePagingJSONResult(obj, data)
 
+@ajax_login_required
+def getUser(request, username):
+    u = User.objects.get(username=username)
+    up = UserProfile.objects.get(user=u)
+    return JsonResponse(UserProfileSerializer(instance=up, many=False).data)
 
+@ajax_login_required
 def getUserProfiles(request):
-    u = UserProfile.objects.get(user__username="ffff")
-    print(u)
-    objects = UserProfileSerializer(instance=UserProfile.objects.filter(user__username="ffff"), many=True).data
+    #objects = UserProfileSerializer(instance=UserProfile.objects.filter(user__username="test"), many=True).data
+    objects = UserProfileSerializer(instance=UserProfile.objects.all(), many=True).data
     return JsonResponse(dict(result=objects))
 
 @ajax_login_required
@@ -70,9 +77,10 @@ def editUser(request):
         u.save()
         up = UserProfile()
         up.user = u
-        up.profile_image = data['profile_image']
+        if 'file' in request.FILES:
+            up.profile_image = request.FILES['file']
         up.save()
-        return JsonResponse(dict(success=False))
+        return JsonResponse(dict(success=True, result=UserProfileSerializer(instance=up, many=False).data))
     else:
         return JsonResponse(dict(success=False))
 
@@ -82,3 +90,15 @@ def getPermissions(request):
     permissions = serializers.serialize('json', Permission.objects.all())
     permissions = json.loads(permissions)
     return JsonResponse(dict(permissions=permissions))
+
+
+def getProfileImage(request):
+    path = request.GET['path']
+    f = open(path, "rb")
+    mime_type_guess = mimetypes.guess_type(basename(f.name))
+    return HttpResponse(f, content_type=mime_type_guess[0])
+
+def whoAmI(request):
+    u = User.objects.get(username=request.user.username)
+    up = UserProfile.objects.get(user=u)
+    return JsonResponse(UserProfileSerializer(instance=up, many=False).data)
