@@ -141,3 +141,5 @@ DRAGON_URL = 'http://localhost:9999/'
 SWAMP_DRAGON = {
     'config_name': 'value',
 }
+
+#AUTH_PROFILE_MODULE = 'apps.account.UserProfile'

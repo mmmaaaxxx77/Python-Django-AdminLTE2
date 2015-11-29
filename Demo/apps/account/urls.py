@@ -18,9 +18,17 @@ import os
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 
-urlpatterns = [url(r'^$', 'apps.account.views.AccountView.index'),
-               url(r'^data/$', 'apps.account.views.AccountView.dataJS'),
-               url(r'^users/$', 'apps.account.views.AccountView.getUsers'),
-               url(r'^user/$', 'apps.account.views.AccountView.addUser'),
-               url(r'^permissions/$', 'apps.account.views.AccountView.getPermissions')]
+accountUrl = [  # Account
+                url(r'^$', 'apps.account.views.AccountView.index', name='account_index'),
+                url(r'^urls.js$', 'apps.account.views.AccountView.getUrls', name='account_urls'),
+                url(r'^data/$', 'apps.account.views.AccountView.dataJS', name='test'),
+                url(r'^users/$', 'apps.account.views.AccountView.getUsers', name='account_getUsers'),
+                url(r'^user/$', 'apps.account.views.AccountView.editUser', name='account_editUser'),
+                url(r'^userP/$', 'apps.account.views.AccountView.getUserProfiles', name='account_getUserPs'),]
 
+urlpatterns = accountUrl + [
+    # Permission
+    url(r'^permission/$', 'apps.account.views.PermissionView.index'),
+    url(r'^permissions/$', 'apps.account.views.AccountView.getPermissions'),
+    # Group
+    url(r'^group/$', 'apps.account.views.GroupView.index'), ]

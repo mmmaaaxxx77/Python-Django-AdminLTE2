@@ -3,190 +3,149 @@
 {% block title %}使用者管理{% endblock %}
 {% block head %}
 
-<link rel="stylesheet" href="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/css/dataTables.bootstrap.css">
-<script src="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/js/jquery.dataTables.min.js"></script>
-<script src="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/js/dataTables.bootstrap.min.js"></script>
+    <!-- datatables -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/css/dataTables.bootstrap.css">
+    <script src="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/js/dataTables.bootstrap.min.js"></script>
+    <!-- select2 -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}backend_view/select2/css/select2.min.css">
+    <script src="{{ STATIC_URL }}backend_view/select2/js/select2.full.min.js"></script>
 
-<!-- page script -->
-<script src="{{ STATIC_URL }}account/accounts.js"></script>
+
+    <!-- page script -->
+    <script src="{{ BASE_URL_BACKEND }}/account/urls.js"></script>
+    <script src="{{ STATIC_URL }}account/account/accounts.js"></script>
+    <script src="{{ STATIC_URL }}account/account/model.js"></script>
 
 {% endblock %}
 
 {% block body %}
-使用者管理
-{{ users }}
-<div class="row">
-    <div class="col-md-12">
-        <div class="box box-primary">
-            <div class="box-header">
-              <h3 class="box-title">Users</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Horizontal Form -->
+            <div class="box box-solid bg-teal-gradient">
+                <div class="box-header ui-sortable-handle">
+                    <h3 class="box-title">新增使用者</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" name="simpleUserCreate" id="simpleUserCreate">
+                    <div class="box-body">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Account</label>
 
-              <div class="box-tools pull-right">
-              </div>
-              <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <table class="table" id="ideaList">
-                    <thead>
-                        <tr style="border: 0px;">
-                            <th class="text-center" style="width: 10%;">指派機關</th>
-                            <th class="text-center" style="width: 10%;">提議日期</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer no-padding">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="username" id="" data-bind="value:newUser.username" placeholder="Account">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" password="password" id="" data-bind="value:newUser.password" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">Re Password</label>
+
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" password="repassword" id="" data-bind="value:newUser.repassword" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">Image input</label>
+                                <div class="col-sm-10">
+                                    <input type="file" name="profile_image" id="profile_image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="callout callout-info">
+                                <h4><i class="icon fa fa-warning"></i> 帳號格式OK！</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer no-border">
+                        <button class="btn btn-info pull-right" data-bind="click:function(){bindSimpleUserCreate();}">Add New</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
             </div>
-          </div>
+        </div>
     </div>
-</div>
-<br/>
-<button onClick="addUser()">test add User</button>
+    <div class="row">
+        <div class="col-md-3">
 
-<script>
-    function addUser(){
-        $.ajax({
-            url: '{{ BASE_URL_BACKEND }}/account/user/',
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({username:"test22", password:"test22"}),
-            success: function(result) {
-                alert(result);
-            }
-        });
-    }
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="http://localhost:8000/static/backend_view/adminLTE/img/user.jpg" alt="User profile picture">
 
-</script>
+                    <h3 class="profile-username text-center">Johnny Tsai</h3>
+
+                    <p class="text-muted text-center">root@root.root</p>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>群組</b> <a class="pull-right">1,322</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>權限</b> <a class="pull-right">543</a>
+                        </li>
+                    </ul>
+
+                    <a href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="col-md-9">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">使用者</h3>
+
+                    <div class="box-tools pull-right">
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table" id="ideaList">
+                        <thead>
+                        <tr style="border: 0px;">
+                            <th class="text-center" style="width: 20%;">USERNAME</th>
+                            <th class="text-center" style="width: 25%;">EMAIL</th>
+                            <th class="text-center" style="width: 15%;">LAST LOGIN</th>
+                            <th class="text-center" style="width: 15%;">DATE JOINED</th>
+                            <th class="text-center" style="width: 25%;"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer no-padding">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
     <script>
-      $.ajaxSetup({
-     beforeSend: function(xhr, settings) {
-         function getCookie(name) {
-             var cookieValue = null;
-             if (document.cookie && document.cookie != '') {
-                 var cookies = document.cookie.split(';');
-                 for (var i = 0; i < cookies.length; i++) {
-                     var cookie = jQuery.trim(cookies[i]);
-                     // Does this cookie string begin with the name we want?
-                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                         break;
-                     }
-                 }
-             }
-             return cookieValue;
-         }
-         //if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-             // Only send the token to relative URLs i.e. locally.
-             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-         //}
-     }
-});
-    </script>
-<script>
-    var datatable = null;
-    function userInit() {
-
-        var pageSize = 10;
-        var ajaxFun = function(sSource, aoData, fnCallback) {
-            var url = "{{ BASE_URL_BACKEND }}/account/users/"
-
-            var startO = null;
-            var lengthO = null;
-            var drawO = null;
-            aoData.forEach(function(item) {
-                if (item.name == "start") {
-                    startO = item;
-                }
-                if (item.name == "length") {
-                    lengthO = item;
-                }
-                if (item.name == "draw") {
-                    drawO = item;
-                }
-            });
-
-            var page = Math.floor(startO.value/lengthO.value);
-            page++;
-
+        function addUser(){
             $.ajax({
-                type : 'GET',
-                url : url + "?page=" + page + "&size=" + pageSize,
-                contentType : 'application/json',
-                success : function(result) {
-                    if (result.success) {
-                        var dat = {
-                            draw : drawO.value,
-                            data : result.result,
-                            recordsTotal : result.totalResults,
-                            recordsFiltered : result.totalResults
-                        }
-                        fnCallback(dat);
-                    } else {
-                        alert("取得列表失敗。");
-                        var dat = {
-                                draw : drawO.value,
-                                data : [],
-                                recordsTotal : 0,
-                                recordsFiltered : 0
-                            }
-                        fnCallback(dat);
-                    }
-                },
-                error : function(result) {
-                    alert("取得列表失敗。");
-                    var dat = {
-                            draw : drawO.value,
-                            data : [],
-                            recordsTotal : 0,
-                            recordsFiltered : 0
-                        }
-                    fnCallback(dat);
+                url: '{{ BASE_URL_BACKEND }}/account/user/',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({username:"test22", password:"test22"}),
+                success: function(result) {
+                    alert(result);
                 }
             });
         }
 
-        datatable = $('#ideaList').DataTable(
-                        {
-                            "bProcessing" : true,
-                            "pageLength" : pageSize,
-                            "bServerSide" : true,
-                            "bFilter" : false,
-                            "bLengthChange" : false,
-                            "columnDefs" : [
-                                    {
-                                        "targets": 0,
-                                        "searchable" : false,
-                                        "orderable" : false,
-                                        "title" : "Name",
-                                        "data" : "fields.username",
-                                        "render" : function(data, type, full, meta) {
-                                            return data;
-                                        },
-                                        "width" : "13%",
-                                        "className" : "text-center"
-                                    },
-                                    {
-                                        "targets": 1,
-                                        "searchable" : false,
-                                        "orderable" : false,
-                                        "title" : "password",
-                                        "data" : "fields.email",
-                                        "render" : function(data, type, full, meta) {
-                                            return data;
-                                        },
-                                        "width" : "10%",
-                                        "className" : "text-center"
-                                    }
+    </script>
 
-                            ],
-                            "fnServerData" : ajaxFun
-                        });
-    }
-    $(function(){
-        userInit();
-    });
-</script>
 {% endblock %}

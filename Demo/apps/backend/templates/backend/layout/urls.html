@@ -1,0 +1,5 @@
+var _URLS = {
+    {% for key,value in urls.items %}
+        "{{ key }}":"{{ value }}"{% if not forloop.last %},{% endif %}
+    {% endfor %}
+}

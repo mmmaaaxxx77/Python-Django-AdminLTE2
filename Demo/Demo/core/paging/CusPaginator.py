@@ -1,14 +1,12 @@
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
-import json
-from django.core import serializers
 from django.http import JsonResponse
 
 __author__ = 'johnnytsai'
 
 
-def getUpPagingJSONResult(object, page, size, **dic):
+def setUpPagingObject(object, page, size, **dic):
     # filter
     if 'filter' in dic and dic['filter'] is not None:
         objects = object.objects.filter(**dic['filter'])
@@ -30,8 +28,8 @@ def getUpPagingJSONResult(object, page, size, **dic):
         objects = paginator.page(paginator.num_pages)
         page = paginator.num_pages
 
-    # list to json
-    objects = serializers.serialize('json', objects, fields=None if 'fields' not in dic else dic['fields'])
-    objects = json.loads(objects)
+    return dict(result=objects, page=page, totalPages=paginator.num_pages, totalResults=paginator.count)
 
-    return JsonResponse(dict(success=True, result=objects, page=page, totalPages=paginator.num_pages, totalResults=paginator.count))
+
+def generatePagingJSONResult(pagingObject, SerializerObject):
+    return JsonResponse(dict(success=True, result=SerializerObject, page=pagingObject['page'], totalPages=pagingObject['totalPages'], totalResults=pagingObject['totalResults']))
