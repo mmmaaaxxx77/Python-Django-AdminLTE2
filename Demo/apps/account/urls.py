@@ -30,9 +30,11 @@ accountUrl = [  # Account
                 url(r'^profileImage/$', 'apps.account.views.AccountView.getProfileImage', name='account_getProfileImage'),
                 url(r'^whoAmI/$', 'apps.account.views.AccountView.whoAmI', name='account_whoAmI'),]
 
-urlpatterns = accountUrl + [
-    # Permission
-    url(r'^permission/$', 'apps.account.views.PermissionView.index'),
-    url(r'^permissions/$', 'apps.account.views.AccountView.getPermissions'),
+permissionUrl = [  # permission
+    url(r'^permission/$', 'apps.account.views.PermissionView.index', name='permission_index'),
+    url(r'^permission/urls.js$', 'apps.account.views.PermissionView.getUrls', name='permission_urls'),
+    url(r'^permissions/$', 'apps.account.views.PermissionView.getPermissions', name='permission_getPermissions'),]
+
+urlpatterns = accountUrl + permissionUrl + [
     # Group
     url(r'^group/$', 'apps.account.views.GroupView.index'), ]
