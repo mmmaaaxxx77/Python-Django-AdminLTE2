@@ -157,7 +157,9 @@ function getUsers(){
 					"title" : "",
 					"data" : "date_joined",
 					"render" : function(data, type, full, meta) {
-						return "";
+						var html = "";
+						html += '<button type="button" class="btn btn-xs btn-danger" onClick="deleteUser(\''+full.username+'\')"><i class="fa fa-fw fa-remove"></i></button>'
+						return html;
 					},
 					"width" : "10%",
 					"className" : "text-center"
@@ -172,16 +174,19 @@ function getUsers(){
 	} );
 }
 
-function addUser(){
-	$.ajax({
-		url: _URLS['account_editUser'],
-		type: 'POST',
-		contentType: 'application/json; charset=utf-8',
-		data: JSON.stringify({username:"test22", password:"test22"}),
-		success: function(result) {
-			alert(result);
-		}
-	});
+function deleteUser(username){
+	var fun =  function() {
+		$.ajax({
+			url: _URLS['account_deleteUser'].replace("(?P&lt;username&gt;\w+)", username),
+			type: 'POST',
+			data: {username: username},
+			success: function (result) {
+				displayMessageDialog("刪除成功");
+				datatable.ajax.reload();
+			}
+		});
+	}
+	displayConfirmDialog("確認刪除？", fun);
 }
 
 function bindSimpleUserCreate(){
@@ -192,23 +197,26 @@ function bindSimpleUserCreate(){
 	if($("#profile_image")[0].files.length != 0)
 		formData.append('file', $("#profile_image")[0].files[0]);
 
-	$.ajax({
-		url: _URLS['account_editUser'],
-		type: 'POST',
-		data: formData,
-		async: false,
-		success: function (data) {
-			if(data.success){
-				clearSimpleUserCreate();
-				datatable.ajax.reload();
-			}else{
+	var fun = function(){
+		$.ajax({
+			url: _URLS['account_newUser'],
+			type: 'POST',
+			data: formData,
+			async: false,
+			success: function (data) {
+				if(data.success){
+					clearSimpleUserCreate();
+					datatable.ajax.reload();
+				}else{
 
-			}
-		},
-		cache: false,
-		contentType: false,
-		processData: false
-	});
+				}
+			},
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+	}
+	displayConfirmDialog("確認新增？", fun);
 }
 
 function clearSimpleUserCreate(){

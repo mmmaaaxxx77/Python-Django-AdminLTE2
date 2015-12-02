@@ -37,3 +37,49 @@ function GetURLParameter(sParam) {
 		}
 	}
 }
+/*
+ Modals
+ */
+var _okFunction = function() {
+};
+function displayMessageDialog(message, okFunction) {
+	if (okFunction != null)
+		_okFunction = okFunction;
+	$("#sharedDialogMessage").html(message);
+	$("#sharedMessageDialog").modal('show');
+	$('#sharedMessageDialog').unbind('hidden.bs.modal');
+}
+
+function doOkFunction() {
+	if (_okFunction != null) {
+		_okFunction();
+	}
+	$("#sharedMessageDialog").modal('hide');
+}
+
+var confirmFunction = function() {
+};
+var cancelFunction = function() {
+};
+function displayConfirmDialog(message, confirmFunctionP, cancelFunctionP) {
+	if (confirmFunctionP != null) {
+		confirmFunction = confirmFunctionP;
+	}
+	if (cancelFunctionP != null) {
+		cancelFunction = cancelFunctionP;
+	}
+	$("#sharedConfirmMessage").html(message);
+	$("#sharedConfirmDialog").modal('show');
+}
+
+function doConfirmDialogFunction() {
+	if (confirmFunction != null)
+		confirmFunction();
+	$("#sharedConfirmDialog").modal('hide');
+}
+
+function doCancelDialogFunction() {
+	if (cancelFunction != null)
+		cancelFunction();
+	$("#sharedConfirmDialog").modal('hide');
+}

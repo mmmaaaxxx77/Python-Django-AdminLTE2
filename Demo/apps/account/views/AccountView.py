@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.models import User
@@ -68,19 +69,36 @@ def getUserProfiles(request):
     return JsonResponse(dict(result=objects))
 
 @ajax_login_required
-def editUser(request):
+def newUser(request):
 
     # 新增使用者 username, password
     if request.method == 'POST':
         data = request.POST.dict()
         u = User(**data)
-        u.save()
+        try:
+            u.save()
+        except IntegrityError:
+            return JsonResponse(dict(success=False, result="使用者名稱重覆"))
         up = UserProfile()
         up.user = u
         if 'file' in request.FILES:
             up.profile_image = request.FILES['file']
         up.save()
         return JsonResponse(dict(success=True, result=UserProfileSerializer(instance=up, many=False).data))
+
+
+@ajax_login_required
+def deleteUser(request, username):
+    # 刪除使用者
+    if request.method == 'POST':
+        #username = username
+        try:
+            u = User.objects.get(username=username)
+            UserProfile.objects.get(user=u).delete()
+            u.delete()
+            return JsonResponse(dict(success=True, result=None))
+        except:
+            return JsonResponse(dict(success=False, result="刪除"+username+"失敗"))
     else:
         return JsonResponse(dict(success=False))
 
