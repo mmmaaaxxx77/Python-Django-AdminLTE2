@@ -25,15 +25,23 @@ accountUrl = [  # Account
                 url(r'^users/$', 'apps.account.views.AccountView.getUsers', name='account_getUsers'),
                 url(r'^users/(?P<username>\w+)/$', 'apps.account.views.AccountView.getUser', name='account_getUser'),
                 url(r'^user/$', 'apps.account.views.AccountView.newUser', name='account_newUser'),
-                url(r'^user/delete/(?P<username>\w+)/$', 'apps.account.views.AccountView.deleteUser', name='account_deleteUser'),
+                url(r'^user/delete/(?P<username>\w+)/$', 'apps.account.views.AccountView.deleteUser',
+                    name='account_deleteUser'),
                 url(r'^userP/$', 'apps.account.views.AccountView.getUserProfiles', name='account_getUserPs'),
-                url(r'^profileImage/$', 'apps.account.views.AccountView.getProfileImage', name='account_getProfileImage'),
-                url(r'^whoAmI/$', 'apps.account.views.AccountView.whoAmI', name='account_whoAmI'),]
+                url(r'^profileImage/$', 'apps.account.views.AccountView.getProfileImage',
+                    name='account_getProfileImage'),
+                url(r'^whoAmI/$', 'apps.account.views.AccountView.whoAmI', name='account_whoAmI'), ]
 
 permissionUrl = [  # permission
-    url(r'^permission/$', 'apps.account.views.PermissionView.index', name='permission_index'),
-    url(r'^permission/urls.js$', 'apps.account.views.PermissionView.getUrls', name='permission_urls'),
-    url(r'^permissions/$', 'apps.account.views.PermissionView.getPermissions', name='permission_getPermissions'),]
+                   url(r'^permission/$', 'apps.account.views.PermissionView.index', name='permission_index'),
+                   url(r'^permission/urls.js$', 'apps.account.views.PermissionView.getUrls', name='permission_urls'),
+                   url(r'^permissions/$', 'apps.account.views.PermissionView.getPermissions',
+                       name='permission_getPermissions'),
+                   url(r'^permission/users/(?P<codename>\w+)/$', 'apps.account.views.PermissionView.getPermissionUsers',
+                       name='permission_getPermissionUsers'),
+                   url(r'^permission/delete/(?P<username>\w+)/(?P<codename>\w+)/$',
+                       'apps.account.views.PermissionView.deleteUserPermission',
+                       name='permission_deleteUserPermission'), ]
 
 urlpatterns = accountUrl + permissionUrl + [
     # Group

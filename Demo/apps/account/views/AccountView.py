@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
@@ -74,11 +75,14 @@ def newUser(request):
     # 新增使用者 username, password
     if request.method == 'POST':
         data = request.POST.dict()
-        u = User(**data)
+        #u = User(**data)
+        u = None
         try:
-            u.save()
+            u = User.objects.create(**data)
         except IntegrityError:
             return JsonResponse(dict(success=False, result="使用者名稱重覆"))
+        if u == None:
+            return JsonResponse(dict(success=False, result="使用者新增失敗"))
         up = UserProfile()
         up.user = u
         if 'file' in request.FILES:

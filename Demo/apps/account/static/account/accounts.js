@@ -193,7 +193,8 @@ function bindSimpleUserCreate(){
 
 	var formData = new FormData();
 	formData.append('username', pageViewModel.newUser.username());
-	formData.append('password', pageViewModel.newUser.password());
+	var password = CryptoJS.MD5(pageViewModel.newUser.password());
+	formData.append('password', password);
 	if($("#profile_image")[0].files.length != 0)
 		formData.append('file', $("#profile_image")[0].files[0]);
 

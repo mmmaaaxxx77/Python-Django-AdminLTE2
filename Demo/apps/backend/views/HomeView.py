@@ -17,7 +17,7 @@ def index(request):
     if request.method == 'GET':
         # user = User(name='johnny')
         #return render(request, 'backend/index.html', {})
-        return HttpResponseRedirect("/backend/account")
+        return HttpResponseRedirect("/backend/dashboard/")
 
 def getMenuJS(request):
     dic = baseUrl(request)

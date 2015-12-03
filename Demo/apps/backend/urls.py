@@ -21,9 +21,9 @@ from django.contrib.auth.views import login, logout
 urlpatterns = [url(r'^$', 'apps.backend.views.HomeView.index'),
                url(r'^menuJS.js$', 'apps.backend.views.HomeView.getMenuJS'),
                #url(r'^login/$', 'apps.backend.views.SecurityView.loginAction'),
-               url(r'^login/$', login, {'template_name':'backend/login.html'}),
+               url(r'^login/$', login, {'template_name': 'backend/login.html'}),
                #url(r'^logout/$', 'apps.backend.views.SecurityView.logoutAction'),
-               url(r'^logout/$', logout, {'template_name':'backend/login.html'}),
+               url(r'^logout/$', logout, {'template_name': 'backend/login.html'}),
                url(r'^json/$', 'apps.backend.views.HomeView.test_json')]
                #url(r'^image/(?P<path>.*)$', 'django.templates.static.serve',
                #    {'document_root': os.path.join(setting.BASE_DIR, 'apps/backend/web/resources/images')}),

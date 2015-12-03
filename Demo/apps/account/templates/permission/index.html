@@ -18,10 +18,10 @@
     <script src="{{ STATIC_URL }}account/permission/model.js"></script>
 
     <style>
-        #userList tbody tr{
+        #permissionList tbody tr{
             cursor: pointer;
         }
-        #userList tr:hover {
+        #permissionList tr:hover {
               background-color: #f0f0f0;
         }
     </style>
@@ -29,91 +29,12 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-12">
-            <!-- Horizontal Form -->
-            <div class="box box-solid bg-teal-gradient">
-                <div class="box-header ui-sortable-handle">
-                    <h3 class="box-title">新增權限</h3>
-                </div>
-                <!-- /.box-header -->
-                <!-- form start -->
-                <form class="form-horizontal" name="simpleUserCreate" id="simpleUserCreate">
-                    <div class="box-body">
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Account</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="username" id="" placeholder="Account">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" password="password" id="" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">Re Password</label>
-
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" password="repassword" id="" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">Image input</label>
-                                <div class="col-sm-10">
-                                    <input type="file" name="profile_image" id="profile_image">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="callout callout-info">
-                                <h4><i class="icon fa fa-warning"></i> 帳號格式OK！</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer no-border">
-                        <button class="btn btn-info pull-right" >Add New</button>
-                    </div>
-                    <!-- /.box-footer -->
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
 
             <!-- Profile Image -->
             <div class="box box-primary">
-                <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive img-circle" src="http://localhost:8000/static/backend_view/adminLTE/img/user.jpg" alt="User profile picture">
-
-                    <h3 class="profile-username text-center">Johnny Tsai</h3>
-
-                    <p class="text-muted text-center">root@root.root</p>
-
-                    <ul class="list-group list-group-unbordered">
-                        <li class="list-group-item">
-                            <b>群組</b> <a class="pull-right">1,322</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>權限</b> <a class="pull-right">543</a>
-                        </li>
-                    </ul>
-
-                    <a href="#" class="btn btn-primary btn-block"><b>Edit</b></a>
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-        </div>
-        <div class="col-md-9">
-            <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">使用者</h3>
+                    <h3 class="box-title"><i class="fa fa-fw fa-user"></i> 使用者 <span data-bind="text:showNowSelectedPermission()"></span></h3>
 
                     <div class="box-tools pull-right">
                     </div>
@@ -121,12 +42,40 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="table" id="userList">
+                    <span data-bind="visible:!showNowSelectedPermission()">Select a permission...</span>
+                    <table class="table" id="permissionUsersList">
+                        <thead>
+                        <tr style="border: 0px;">
+                            <th class="text-center" style="width: 20%;">USERNAME</th>
+                            <th class="text-center" style="width: 25%;"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer no-padding">
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="col-md-8">
+            <div class="box box-solid bg-teal-gradient">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-fw fa-expeditedssl"></i> 權限</h3>
+
+                    <div class="box-tools pull-right">
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table" id="permissionList">
                         <thead>
                         <tr style="border: 0px;">
                             <th class="text-center" style="width: 20%;">CODENAME</th>
                             <th class="text-center" style="width: 25%;">NAME</th>
-                            <th class="text-center" style="width: 25%;"></th>
                         </tr>
                         </thead>
                     </table>
