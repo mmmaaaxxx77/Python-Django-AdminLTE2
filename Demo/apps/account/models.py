@@ -11,7 +11,8 @@ def get_image_path(instance, filename):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
-    profile_image = ImageField(upload_to="/Users/johnnytsai/PythonProjects/Python-Django-AdminLTE2/Demo/upload/", null=True)
+    #profile_image = ImageField(upload_to="/Users/johnnytsai/PythonProjects/Python-Django-AdminLTE2/Demo/upload/", null=True)
+    profile_image = ImageField(upload_to="/Users/mmmaaaxxx77/GoogleDrive/PythonProjects/Python-Django-AdminLTE2/Demo/upload/", null=True)
 
     def extra_user(self):
         return serializers.serialize('user', self.user.all())

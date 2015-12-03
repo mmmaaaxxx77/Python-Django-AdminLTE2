@@ -30,7 +30,7 @@ def index(request):
 
 @ajax_login_required
 def getUrls(request):
-    urls = getAllFullUrl(request, _url.accountUrl, "account")
+    urls = getAllFullUrl(request, _url.globalUrl + _url.accountUrl, "account")
     return HttpResponse(render_to_string("backend/layout/urls.html", dict(urls=urls)), content_type="text/javascript; charset=UTF-8")
 
 

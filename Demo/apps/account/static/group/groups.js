@@ -4,30 +4,33 @@ function PageViewModel(nowPage) {
     var viewModel = this;
     this._dummyObservable = ko.observable();
     this.nowPage = ko.observable(nowPage);
-    this.nowSelectedPermission = null;
-    this.showNowSelectedPermission = ko.pureComputed(function () {
+    this.nowSelectedGroup = null;
+    this.showNowSelectedGroup = ko.pureComputed(function () {
         pageViewModel._dummyObservable();
-        if (this.nowSelectedPermission != null)
-            return " - " + this.nowSelectedPermission.codename;
+        if (this.nowSelectedGroup != null)
+            return " - " + this.nowSelectedGroup.name;
         else
             return null;
     }, this);
+    this.newGroup = {
+		name : ko.observable(null)
+	}
 }
 
-/* Permissions */
+/* Groups */
 $(function () {
-    pageViewModel = new PageViewModel("帳號管理%>權限");
+    pageViewModel = new PageViewModel("帳號管理%>群組");
     ko.applyBindings(getMainViewModel());
     ko.applyBindings(pageViewModel, document.getElementById("_subPage"));
-    getPermissions();
-    getPermissionUsers();
+    getGroups();
+    getGroupUsers();
 });
 
 var datatable = null;
-function getPermissions() {
+function getGroups() {
     var pageSize = 10;
     var ajaxFun = function (sSource, aoData, fnCallback) {
-        var url = _URLS['permission_getPermissions']
+        var url = _URLS['group_getGroups']
 
         var startO = null;
         var lengthO = null;
@@ -55,7 +58,7 @@ function getPermissions() {
                 if (result.success) {
                     var modelresult = [];
                     for (var i = 0; i < result.result.length; i++) {
-                        modelresult.push(new Permission(result.result[i]));
+                        modelresult.push(new Group(result.result[i]));
                     }
                     var dat = {
                         draw: drawO.value,
@@ -88,7 +91,7 @@ function getPermissions() {
         });
     }
 
-    datatable = $('#permissionList').DataTable(
+    datatable = $('#groupList').DataTable(
         {
             "bProcessing": true,
             "pageLength": pageSize,
@@ -100,47 +103,49 @@ function getPermissions() {
                     "targets": 0,
                     "searchable": false,
                     "orderable": false,
-                    "title": "CODENAME",
-                    "data": "codename",
+                    "title": "NAME",
+                    "data": "name",
                     "render": function (data, type, full, meta) {
                         return data;
                     },
-                    "width": "40%",
+                    "width": "80%",
                     "className": "text-center"
                 },
                 {
                     "targets": 1,
                     "searchable": false,
                     "orderable": false,
-                    "title": "NAME",
+                    "title": "",
                     "data": "name",
                     "render": function (data, type, full, meta) {
-                        return data;
+                        var html = "";
+						html += '<button type="button" class="btn btn-xs btn-danger" onClick="deleteGroup(\''+full.name+'\')"><i class="fa fa-fw fa-remove"></i></button>'
+                        return html;
                     },
-                    "width": "60%",
+                    "width": "20%",
                     "className": "text-center"
                 }
 
             ],
             "fnServerData": ajaxFun
         });
-    $('#permissionList tbody').on('mouseover', 'tr', function () {
+    $('#groupList tbody').on('mouseover', 'tr', function () {
         var data = datatable.row(this).data();
-        pageViewModel.nowSelectedPermission = data;
+        pageViewModel.nowSelectedGroup = data;
         pageViewModel._dummyObservable.notifySubscribers();
         userdatatable.ajax.reload();
     });
 }
 
 var userdatatable = null;
-function getPermissionUsers() {
+function getGroupUsers() {
     var pageSize = 10;
     var ajaxFun = function (sSource, aoData, fnCallback) {
-        var codename = "";
-        var url = _URLS['permission_getPermissionUsers'];
-        if (pageViewModel.nowSelectedPermission != null) {
-            codename = pageViewModel.nowSelectedPermission.codename;
-            url = _URLS['permission_getPermissionUsers'].replace("(?P&lt;codename&gt;\w+)", codename)
+        var name = "";
+        var url = _URLS['group_getGroupUsers'];
+        if (pageViewModel.nowSelectedGroup != null) {
+            name = pageViewModel.nowSelectedGroup.name;
+            url = _URLS['group_getGroupUsers'].replace("(?P&lt;name&gt;\w+)", name)
         }
 
         var startO = null;
@@ -161,7 +166,7 @@ function getPermissionUsers() {
         var page = Math.floor(startO.value / lengthO.value);
         page++;
 
-        if (pageViewModel.nowSelectedPermission != null) {
+        if (pageViewModel.nowSelectedGroup != null) {
             $.ajax({
                 type: 'GET',
                 url: url + "?page=" + page + "&size=" + pageSize,
@@ -212,7 +217,7 @@ function getPermissionUsers() {
         }
     }
 
-    userdatatable = $('#permissionUsersList').DataTable(
+    userdatatable = $('#groupUsersList').DataTable(
         {
             "bProcessing": true,
             "pageLength": pageSize,
@@ -241,7 +246,7 @@ function getPermissionUsers() {
                     "data": "username",
                     "render": function (data, type, full, meta) {
                         var html = "";
-						html += '<button type="button" class="btn btn-xs btn-danger" onClick="deleteUserPermission(\''+full.username+'\')"><i class="fa fa-fw fa-remove"></i></button>'
+						html += '<button type="button" class="btn btn-xs btn-danger" onClick="deleteUserGroup(\''+full.username+'\')"><i class="fa fa-fw fa-remove"></i></button>'
 						return html;
                     },
                     "width": "20%",
@@ -251,20 +256,75 @@ function getPermissionUsers() {
             ],
             "fnServerData": ajaxFun
         });
-    $('#permissionUsersList tbody').on('mouseover', 'tr', function () {
+    $('#groupUsersList tbody').on('mouseover', 'tr', function () {
         var data = datatable.row(this).data();
     });
 }
 
-function deleteUserPermission(username){
-    var codename = pageViewModel.nowSelectedPermission.codename;
+function createGroup(){
+
+	var formData = new FormData();
+	formData.append('name', pageViewModel.newGroup.name());
+
+	var fun = function(){
+		$.ajax({
+			url: _URLS['group_newGroup'],
+			type: 'POST',
+			data: formData,
+			async: false,
+			success: function (data) {
+				if(data.success){
+					clearSimpleGroupCreate();
+					datatable.ajax.reload();
+                    displayMessageDialog("新增成功");
+				}else{
+
+				}
+			},
+			cache: false,
+			contentType: false,
+			processData: false
+		});
+	}
+	displayConfirmDialog("確認新增？", fun);
+}
+
+function clearSimpleGroupCreate(){
+    pageViewModel.newGroup.name(null);
+}
+
+function deleteGroup(name){
 	var fun =  function() {
 		$.ajax({
-			url: _URLS['permission_deleteUserPermission'].replace("(?P&lt;username&gt;\w+)", username).replace("(?P&lt;codename&gt;\w+)", codename),
+			url: _URLS['group_deleteGroup'].replace("(?P&lt;name&gt;\w+)", name),
 			type: 'POST',
 			data: {},
 			success: function (result) {
                 if(result.success) {
+                    datatable.ajax.reload();
+                    displayMessageDialog("刪除成功");
+                }else{
+                    displayMessageDialog("刪除失敗：" + result.result);
+                }
+			},
+            error: function (result){
+                displayMessageDialog("刪除失敗：" + result.result);
+            }
+		});
+	}
+	displayConfirmDialog("確認刪除？", fun);
+}
+
+function deleteUserGroup(username){
+    var name = pageViewModel.nowSelectedGroup.name;
+	var fun =  function() {
+		$.ajax({
+			url: _URLS['group_deleteUserGroup'].replace("(?P&lt;username&gt;\w+)", username).replace("(?P&lt;name&gt;\w+)", name),
+			type: 'POST',
+			data: {},
+			success: function (result) {
+                if(result.success) {
+                    userdatatable.ajax.reload();
                     displayMessageDialog("刪除成功");
                 }else{
                     displayMessageDialog("刪除失敗：" + result.result);
