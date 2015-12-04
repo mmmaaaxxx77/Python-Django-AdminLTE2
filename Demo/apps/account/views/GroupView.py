@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group, User, Permission
 from django.db import IntegrityError
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
@@ -52,6 +52,11 @@ def getGroupUsers(request, name):
 
 
 @ajax_login_required
+def getGroup(request, name):
+    group = Group.objects.get(name=name)
+    return JsonResponse(dict(success=True, result=GroupSerializer(instance=group, many=False).data))
+
+@ajax_login_required
 def newGroup(request):
 
     # 新增Group name
@@ -84,4 +89,21 @@ def deleteUserGroup(request, username, name):
         return JsonResponse(dict(success=True, result=""))
     except:
         return JsonResponse(dict(success=False, result="remove user group fail"))
+
+
+@ajax_permission_required(codename2='change_group')
+def editGeoup(request, name):
+    if request.method == 'POST':
+        new_permissions = [] if 'permissions' not in request.POST else request.POST.getlist('permissions')
+
+        permissions = []
+        for p in new_permissions:
+            o = Permission.objects.get(codename=p)
+            permissions.append(o)
+
+        u = Group.objects.get(name=name)
+        u.permissions.clear()
+        u.permissions.add(*permissions)
+
+        return JsonResponse(dict(success=True, result=""))
 

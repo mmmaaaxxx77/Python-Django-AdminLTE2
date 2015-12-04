@@ -42,6 +42,8 @@ accountUrl = [  # Account
                 url(r'^user/$', 'apps.account.views.AccountView.newUser', name='account_newUser'),
                 url(r'^user/delete/(?P<username>\w+)/$', 'apps.account.views.AccountView.deleteUser',
                     name='account_deleteUser'),
+                url(r'^user/edit/(?P<username>\w+)/$', 'apps.account.views.AccountView.editUser',
+                    name='account_editUser'),
                 url(r'^userP/$', 'apps.account.views.AccountView.getUserProfiles', name='account_getUserPs'), ]
 
 permissionUrl = [  # permission
@@ -54,11 +56,15 @@ permissionUrl = [  # permission
 
 groupUrl = [  # Group
               url(r'^group/urls.js$', 'apps.account.views.GroupView.getUrls', name='group_urls'),
+              url(r'^group/(?P<name>\w+)/$', 'apps.account.views.GroupView.getGroup',
+                  name='group_getGroup'),
               url(r'^group/users/(?P<name>\w+)/$', 'apps.account.views.GroupView.getGroupUsers',
                   name='group_getGroupUsers'),
               url(r'^group/group/$', 'apps.account.views.GroupView.newGroup', name='group_newGroup'),
               url(r'^group/delete/(?P<name>\w+)/$', 'apps.account.views.GroupView.deleteGroup',
                   name='group_deleteGroup'),
+              url(r'^group/edit/(?P<name>\w+)/$', 'apps.account.views.GroupView.editGeoup',
+                  name='group_editGroup'),
               url(r'^group/delete/(?P<username>\w+)/(?P<name>\w+)/$',
                   'apps.account.views.GroupView.deleteUserGroup',
                   name='group_deleteUserGroup'), ]

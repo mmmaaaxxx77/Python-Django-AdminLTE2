@@ -9,7 +9,7 @@
     <script src="{{ STATIC_URL }}backend_view/adminLTE/plugins/datatables/js/dataTables.bootstrap.min.js"></script>
     <!-- select2 -->
     <link rel="stylesheet" href="{{ STATIC_URL }}backend_view/select2/css/select2.min.css">
-    <script src="{{ STATIC_URL }}backend_view/select2/js/select2.full.min.js"></script>
+    <script src="{{ STATIC_URL }}backend_view/select2/js/select2.min.js"></script>
 
 
     <!-- page script -->
@@ -71,6 +71,37 @@
         <div class="col-md-4">
 
             <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-fw fa-expeditedssl"></i> 權限 <span
+                            data-bind="text:showNowSelectedGroup()"></span></h3>
+
+                    <div class="box-tools pull-right">
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <span data-bind="visible:!showNowSelectedGroup()">Select a group...</span>
+
+                    <ul class="list-group list-group-unbordered" data-bind="visible:showNowSelectedGroup()">
+                        <li class="list-group-item">
+                            <select class="form-control" id="permissionList" multiple
+                                    data-bind="options: nowSelectedGroupPermission.permissions, selectedOptions: nowSelectedGroupPermission.selectPermissions, optionsText:'codename', optionsValue:'codename'">
+                            </select>
+                        </li>
+                    </ul>
+                    <a href="#" class="btn btn-primary btn-block"
+                       data-bind="visible:showNowSelectedGroup(), click:function(){saveGroup()}"><b>Save</b></a>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer no-padding">
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title"><i class="fa fa-fw fa-user"></i> 使用者 <span

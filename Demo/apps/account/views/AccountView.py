@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.models import Permission
 import json
 from Demo.core.secutity.AuthDecorators import ajax_login_required
@@ -105,6 +105,38 @@ def deleteUser(request, username):
             return JsonResponse(dict(success=False, result="刪除"+username+"失敗"))
     else:
         return JsonResponse(dict(success=False))
+
+
+@ajax_login_required
+def editUser(request, username):
+    if request.method == 'POST':
+        new_email = None if 'email' not in request.POST else request.POST['email']
+        new_groups = [] if 'groups' not in request.POST else request.POST.getlist('groups')
+        new_user_permissions = [] if 'user_permissions' not in request.POST else request.POST.getlist('user_permissions')
+
+        groups = []
+        for g in new_groups:
+            o = Group.objects.get(name=g)
+            groups.append(o)
+        permissions = []
+        for p in new_user_permissions:
+            o = Permission.objects.get(codename=p)
+            permissions.append(o)
+
+        u = User.objects.get(username=username)
+
+        if new_email != None:
+            u.email = new_email
+
+        u.save()
+
+        u.groups.clear()
+        u.groups.add(*groups)
+        u.user_permissions.clear()
+        u.user_permissions.add(*permissions)
+
+        return JsonResponse(dict(success=True, result=""))
+
 
 
 @ajax_login_required

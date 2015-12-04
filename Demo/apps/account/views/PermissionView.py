@@ -43,7 +43,8 @@ def getPermissionUsers(request, codename):
     page = 1 if 'page' not in request.GET else request.GET['page']
     size = 10 if 'size' not in request.GET else request.GET['size']
     perm = Permission.objects.get(codename=codename)
-    users = User.objects.filter(Q(groups__permissions=perm) | Q(user_permissions=perm))
+    #users = User.objects.filter(Q(groups__permissions=perm) | Q(user_permissions=perm))
+    users = User.objects.filter(Q(user_permissions=perm))
     obj = setUpPagingObjects(users, page, size)
     data = UserSerializer(instance=obj['result'], many=True).data
     return generatePagingJSONResult(obj, data)

@@ -5,6 +5,10 @@ function PageViewModel(nowPage) {
     this._dummyObservable = ko.observable();
     this.nowPage = ko.observable(nowPage);
     this.nowSelectedGroup = null;
+    this.nowSelectedGroupPermission = {
+        permissions : ko.observableArray([]),
+        selectPermissions : []
+    }
     this.showNowSelectedGroup = ko.pureComputed(function () {
         pageViewModel._dummyObservable();
         if (this.nowSelectedGroup != null)
@@ -24,6 +28,15 @@ $(function () {
     ko.applyBindings(pageViewModel, document.getElementById("_subPage"));
     getGroups();
     getGroupUsers();
+    getPermissions();
+
+    $("#permissionList").select2(
+        {
+            placeholder: "請選擇權限",
+            allowClear: true,
+            width: '100%'
+        }
+    );
 });
 
 var datatable = null;
@@ -134,6 +147,26 @@ function getGroups() {
         pageViewModel.nowSelectedGroup = data;
         pageViewModel._dummyObservable.notifySubscribers();
         userdatatable.ajax.reload();
+        getGroupPermission();
+    });
+}
+
+function getGroupPermission(){
+    $.ajax({
+        type: 'GET',
+        url: _URLS['group_getGroup'].replace("(?P&lt;name&gt;\w+)", pageViewModel.nowSelectedGroup.name),
+        contentType: 'application/json',
+        success: function (result) {
+            permissions = [];
+            result.result.permissions.forEach(function(item){
+                permissions[permissions.length] = item.codename;
+            });
+            pageViewModel.nowSelectedGroupPermission.selectPermissions = permissions;
+            $("#permissionList").select2("val", permissions);
+        },
+        error: function (result) {
+            alert("取得Permission失敗。");
+        }
     });
 }
 
@@ -336,4 +369,49 @@ function deleteUserGroup(username){
 		});
 	}
 	displayConfirmDialog("確認刪除？", fun);
+}
+
+function getPermissions() {
+    $.ajax({
+        type: 'GET',
+        url: _URLS['permission_getPermissions']+"?size=10000",
+        contentType: 'application/json',
+        success: function (result) {
+            pageViewModel.nowSelectedGroupPermission.permissions(result.result);
+        },
+        error: function (result) {
+            alert("取得Permission失敗。");
+        }
+    });
+}
+
+function saveGroup(){
+
+    var formData = new FormData();
+    pageViewModel.nowSelectedGroupPermission.selectPermissions.forEach(function(item){
+        formData.append('permissions', item);
+    });
+
+    var fun = function () {
+        $.ajax({
+            url: _URLS['group_editGroup'].replace("(?P&lt;name&gt;\w+)", pageViewModel.nowSelectedGroup.name),
+            type: 'POST',
+            data: formData,
+            async: false,
+            success: function (result) {
+                if (result.success) {
+                    displayMessageDialog("修改成功");
+                } else {
+                    displayMessageDialog("修改失敗: " + result.result);
+                }
+            },
+            error: function(result){
+
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+    displayConfirmDialog("確認修改？", fun);
 }

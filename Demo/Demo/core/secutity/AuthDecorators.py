@@ -1,4 +1,5 @@
 from functools import wraps
+from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
@@ -20,7 +21,8 @@ def ajax_permission_required(codename2):
         def wrapper(request, *args, **kwargs):
             if not request.user.is_authenticated():
                 raise PermissionDenied
-            if not request.user.has_perm(codename2):
+            u = User.objects.get(username=request.user.username)
+            if not u.has_perm(codename2):
                 return JsonResponse(dict(success=False, result="Permission denied"))
             return view(request, *args, **kwargs)
         return wrapper
